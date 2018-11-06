@@ -44,12 +44,9 @@ class FrontendUtility
      *
      * @return string
      */
-    public static function addQueryInformationAsJavaScript($query, $position = null, $arguments = [], $settings)
+    public static function addQueryInformationAsJavaScript($query, $position = null, $arguments = [], $settings): string
     {
         if ($settings['paging']['detailPagePaging']) {
-            $scriptTag = GeneralUtility::makeInstance(TagBuilder::class, 'script');
-            $scriptTag->addAttribute('type', 'text/javascript');
-
             if (array_key_exists('underlyingQuery', $arguments)) {
                 $arguments = $arguments['underlyingQuery'];
             }
@@ -67,9 +64,8 @@ class FrontendUtility
             if ($arguments['sort']) {
                 $underlyingQuery['sort'] = $arguments['sort'];
             }
-            $scriptTag->setContent('var underlyingQuery = '.json_encode($underlyingQuery).';');
 
-            return $scriptTag->render();
+            return 'var underlyingQuery = '.json_encode($underlyingQuery).';';
         }
 
         return '';

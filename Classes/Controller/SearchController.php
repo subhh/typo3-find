@@ -34,6 +34,7 @@ use Subugoe\Find\Utility\ArrayUtility;
 use Subugoe\Find\Utility\FrontendUtility;
 use Subugoe\Find\Utility\LoggerUtility;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -87,13 +88,16 @@ class SearchController extends ActionController
             $this->forward('detail');
         } else {
             $this->searchProvider->setCounter();
-            $this->response->addAdditionalHeaderData(
+            $pageRenderer = $this->objectManager->get(PageRenderer::class);
+            $pageRenderer->addJsInlineCode('underlying',
                 FrontendUtility::addQueryInformationAsJavaScript(
                     $this->requestArguments['q'],
                     null,
                     $this->searchProvider->getRequestArguments(),
                     $this->settings
-                )
+                ),
+                true,
+                true
             );
             $this->addStandardAssignments();
             $defaultQuery = $this->searchProvider->getDefaultQuery();
@@ -119,9 +123,13 @@ class SearchController extends ActionController
 
             if ($this->request->hasArgument('underlyingQuery')) {
                 $underlyingQueryInfo = $this->request->getArgument('underlyingQuery');
-                $this->response->addAdditionalHeaderData(
+                $pageRenderer = $this->objectManager->get(PageRenderer::class);
+                $pageRenderer->addJsInlineCode(
+                    'underlying',
                     FrontendUtility::addQueryInformationAsJavaScript($underlyingQueryInfo['q'],
-                        (int) $underlyingQueryInfo['position'], $arguments, $this->settings)
+                        (int) $underlyingQueryInfo['position'], $arguments, $this->settings),
+                    true,
+                    true
                 );
             }
             $this->addStandardAssignments();
