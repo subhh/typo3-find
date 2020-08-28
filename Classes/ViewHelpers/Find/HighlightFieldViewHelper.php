@@ -153,7 +153,7 @@ class HighlightFieldViewHelper extends AbstractViewHelper
      */
     protected static function highlightSingleField($fieldString, $highlightInfo, $arguments)
     {
-        $result = null;
+        $result = $fieldString;
 
         foreach ($highlightInfo as $highlightItem) {
             $highlightItemStripped = str_replace(['\ueeee', '\ueeef'], ['', ''], $highlightItem);
@@ -168,13 +168,12 @@ class HighlightFieldViewHelper extends AbstractViewHelper
                     ['\ueeee', '\ueeef'],
                     [$arguments['highlightTagOpen'], $arguments['highlightTagClose']],
                     $highlightItem);
-                $result = str_replace($highlightItemStripped, $highlightItemMarkedUp, $fieldString);
-                break;
+                $result = str_replace($highlightItemStripped, $highlightItemMarkedUp, $result);
             }
         }
 
         // If no highlighted string is present, use the original one.
-        if (null === $result) {
+        if ($fieldString === $result) {
             if ($arguments['raw']) {
                 $result = $fieldString;
             } else {

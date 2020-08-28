@@ -689,6 +689,11 @@ class SolrServiceProvider extends AbstractServiceProvider implements ServiceProv
             // Configure the fragement length.
             $highlight->setFragSize($highlightConfig['fragsize']);
 
+            // Configure the number of snippets
+            if ($highlightConfig['snippets']) {
+                $highlight->setSnippets($highlightConfig['snippets']);
+            }
+
             // Set up alternative fields.
             if ($highlightConfig['alternateFields']) {
                 foreach ($highlightConfig['alternateFields'] as $fieldName => $alternateFieldName) {

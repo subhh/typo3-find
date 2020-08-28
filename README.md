@@ -712,6 +712,7 @@ following fields:
 -   `fields` \[{f1 = \*}\]: an array of field names; its keys should
     begin with a letter for technical reasons (i.e `f1` instead of `1`
 -   `fragsize` \[100\]: the maximum length of the highlighted fragment
+-   `snippets` \[1\]: maximum number of snippets
 -   `query`: a custom sprintf-style query template to use for
     highlighting, e.g. in the simplest case \[%s]
 -   `useQueryTerms` \[0\]: set to 1 to create highlight queries for each
